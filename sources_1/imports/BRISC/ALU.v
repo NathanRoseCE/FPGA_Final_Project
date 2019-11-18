@@ -13,7 +13,7 @@ begin
  case(alu_control)
  3'b000: result = a + b; // add
  3'b001: result = a - b; // sub
- 3'b010: result = (a[0]^b[0])+(a[1]^b[1])+(a[2]^b[2])+(a[3]^b[3]);
+ 3'b010: result = a << b;
  3'b011: result = a^b;
  3'b100: result = a>>b;
  3'b101: result = a & b; // and

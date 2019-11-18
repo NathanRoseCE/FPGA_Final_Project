@@ -19,151 +19,415 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+/**
+        a_addr=0;           //reg read addresss
+        b_addr=0;           //reg read address
+        c_addr=0;           //reg write address
+        immediate_val=0;    //immediate value, overwrites a_val
+        alu_control=3'b000; //alu operation
+        addr = 0;      //address for data or instruction memory, instruction user lower half
+        JCTL=0;             //paramaters for jump 0 = no, 1 = JZ, 2 = JLT, 3 = uncondititional
+        im_sel=0;           //use the immediate value and overwrite A
+        reg_write=0;     //write to register C
+        data_read=0;        //read data at address in data mem
+        data_write=0;       //write data at address in data mem
+        reg_addr = 0;       //address is from reg not immediate val
+        */
 module control_logic(
-    input [3:0] operation,
-    input zero,lt,
+    input [15:0] operation,
+    output reg [3:0] a_addr, b_addr, c_addr,//c = a + b
+    output reg [7:0] immediate_val,
+    output reg [7:0] addr,
     output reg [2:0] alu_control,
-    output reg im_sel,write_enable,out_write_en,in_mux_en,jump_en
+    output reg [1:0] JCTL,
+    output reg im_sel, reg_write, data_read, data_write, reg_addr 
     );
     always @*
         begin
-        case (operation)
-        4'b0000:begin   //NOP
-                    alu_control=3'b001;
-                    write_enable=0;
+        case (operation[15:12])
+        4'h0:begin   //NOP
+                    a_addr=0;
+                    b_addr=0;
+                    c_addr=0;
+                    immediate_val=0;
+                    alu_control=3'b111;
+                    addr = 0;
+                    JCTL=0;
                     im_sel=0;
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0; 
+                    reg_write=0;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr = 0;
                  end 
-        4'b0001:begin   //ADD
-                    alu_control=3'b000;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0; 
-                end
-        4'b0010:begin   //LDI
+        4'h1:begin  //LDD
+                    a_addr=0;
+                    b_addr=0;
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
                     alu_control=3'b111;
-                    write_enable=1;
-                    im_sel=1;
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0; 
-                end 
-        4'b0011:begin  //SUB
-                    alu_control=3'b001;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0; 
-                end     
-        4'b0100:begin  //cnt 1's
-                    alu_control=3'b010;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0;
-                  end     
-        4'b0101:begin  //AND  
-                    alu_control=3'b101;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0; 
-                end     
-        4'b0110:begin  //OR  
-                    alu_control=3'b110;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0;
-                 end    
-        4'b0111:begin  //INV  
-                    alu_control=3'b010;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0; 
-                 end   
-        4'b1000:begin  //xor
-                    alu_control=3'b011;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0; 
-                 end    
-        4'b1001:begin  //SR 
-                    alu_control=3'b100;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0;
-                end                   
-        4'b1010:begin  //SL 
-                    alu_control=3'b011;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=0;
-                end                                                                         
-       4'b1011:begin  //IN
-                    alu_control=3'b111;
-                    write_enable=1;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=1;
-                    jump_en=0; 
-                end      
-       4'b1100:begin  //OUT
-                    alu_control=3'b111;
-                    write_enable=0;
-                    im_sel=0; 
-                    out_write_en=1;
-                    in_mux_en=0;
-                    jump_en=0;
-                end                
-        4'b1101:begin  //JZ
-                    alu_control=3'b111;
-                    write_enable=0;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=zero;   
-                 end    
-        4'b1110:begin  //JLT
-                    alu_control=3'b111;
-                    write_enable=0;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=lt;
-                 end      
-        4'b1111:begin  //J
-                    alu_control=3'b111;
-                    write_enable=0;
-                    im_sel=0; 
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=1;
-                 end                                                 
-        default: begin   //NOP
-                    alu_control=3'b001;
-                    write_enable=0;
+                    addr = operation[7:0];
+                    JCTL=0;
                     im_sel=0;
-                    out_write_en=0;
-                    in_mux_en=0;
-                    jump_en=1;
+                    reg_write=1;
+                    data_read=1;
+                    data_write=0;
+                    reg_addr = 0;
+                end
+        4'h2:begin   //LD
+                    a_addr=0;
+                    b_addr=operation[7:4];
+                    c_addr=operation[11:8];
+                    immediate_val=operation[3:0];                    
+                    alu_control=3'b000;
+                    addr=0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=1;
+                    data_write=0;
+                    reg_addr = 1;
+                end 
+        4'h3:begin  //STR
+                    a_addr=operation[11:8];
+                    b_addr=0;
+                    c_addr=0;
+                    immediate_val=0;                    
+                    alu_control=3'b111;
+                    addr = operation[7:0];
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=0;
+                    data_read=0;
+                    data_write=1;
+                    reg_addr = 0;
+                end     
+        4'h4:begin  //LDIm
+                    a_addr=0;
+                    b_addr=0;
+                    c_addr=operation[11:8];
+                    immediate_val=operation[7:0];                    
+                    alu_control=3'b111;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=1;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr = 0;
+                  end     
+        4'h5:begin  //ADD  
+                    a_addr=operation[7:4];
+                    b_addr=operation[3:0];
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
+                    alu_control=3'b000;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr=0;
+                end     
+        4'h6:begin  //SUB  
+                    a_addr=operation[7:4];
+                    b_addr=operation[3:0];
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
+                    alu_control=3'b001;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr=0;
+                 end    
+        4'h7:begin  //AND  
+                    a_addr=operation[7:4];
+                    b_addr=operation[3:0];
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
+                    alu_control=3'b101;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr=0;
+                 end   
+        4'h8:begin  //OR
+                    a_addr=operation[7:4];
+                    b_addr=operation[3:0];
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
+                    alu_control=3'b110;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr=0;
+                 end    
+        4'h9:begin  //noop for now
+                    a_addr=0;
+                    b_addr=0;
+                    c_addr=0;
+                    immediate_val=0;
+                    alu_control=3'b111;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=0;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr = 0;
+                end                   
+        4'hA:begin  //XOR 
+                    a_addr=operation[7:4];
+                    b_addr=operation[3:0];
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
+                    alu_control=3'b011;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr=0;
+                end                                                                         
+       4'hB:begin  //SR
+                    a_addr=operation[7:4];
+                    b_addr=operation[3:0];
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
+                    alu_control=3'b100;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr=0;
+                end      
+       4'hC:begin  //SL
+                    a_addr=operation[7:4];
+                    b_addr=operation[3:0];
+                    c_addr=operation[11:8];
+                    immediate_val=0;                    
+                    alu_control=3'b010;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=1;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr=0;
+                end                
+        4'hD:begin  //JZ
+                    a_addr=operation[11:8];
+                    b_addr=0;
+                    c_addr=0;
+                    immediate_val=0;
+                    alu_control=3'b111;
+                    addr = operation[7:0];
+                    JCTL=1;
+                    im_sel=0;
+                    reg_write=0;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr = 0;  
+                 end    
+        4'hE:begin  //JLT
+                    a_addr=operation[11:8];
+                    b_addr=0;
+                    c_addr=0;
+                    immediate_val=0;
+                    alu_control=3'b111;
+                    addr = operation[7:0];
+                    JCTL=2;
+                    im_sel=0;
+                    reg_write=0;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr = 0;
+                 end      
+        4'hF:begin  //more commands
+                    case(operation[11:8]) 
+                    4'h0:begin //J
+                                a_addr=0;
+                                b_addr=0;
+                                c_addr=0;
+                                immediate_val=0;
+                                alu_control=3'b111;
+                                addr = operation[7:0];
+                                JCTL=3;
+                                im_sel=0;
+                                reg_write=0;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr = 0;
+                            end
+                    4'h1:begin //PUSH
+                            //future task for now noop
+                                a_addr=0;
+                                b_addr=0;
+                                c_addr=0;
+                                immediate_val=0;
+                                alu_control=3'b111;
+                                addr = 0;
+                                JCTL=0;
+                                im_sel=0;
+                                reg_write=0;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr = 0;
+                            end
+                    4'h2:begin //POP
+                            //future task for now noop
+                                a_addr=0;
+                                b_addr=0;
+                                c_addr=0;
+                                immediate_val=0;
+                                alu_control=3'b111;
+                                addr = 0;
+                                JCTL=0;
+                                im_sel=0;
+                                reg_write=0;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr = 0;
+                            end
+                    4'h3:begin //ADD_I
+                                a_addr=0;
+                                b_addr=operation[7:4];
+                                c_addr=operation[7:4];
+                                immediate_val=operation[3:0];                    
+                                alu_control=3'b000;
+                                addr=0;
+                                JCTL=0;
+                                im_sel=1;
+                                reg_write=1;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr=0;
+                            end
+                    4'h4:begin //SUB_I
+                                a_addr=0;
+                                b_addr=operation[7:4];
+                                c_addr=operation[7:4];
+                                immediate_val=operation[3:0];                    
+                                alu_control=3'b001;
+                                addr=0;
+                                JCTL=0;
+                                im_sel=1;
+                                reg_write=1;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr=0;
+                            end
+                    4'h5:begin //AND_I
+                                a_addr=0;
+                                b_addr=operation[7:4];
+                                c_addr=operation[7:4];
+                                immediate_val=operation[3:0];                    
+                                alu_control=3'b101;
+                                addr=0;
+                                JCTL=0;
+                                im_sel=1;
+                                reg_write=1;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr=0;
+                            end
+                    4'h6:begin //OR_I
+                                a_addr=0;
+                                b_addr=operation[7:4];
+                                c_addr=operation[7:4];
+                                immediate_val=operation[3:0];                    
+                                alu_control=3'b110;
+                                addr=0;
+                                JCTL=0;
+                                im_sel=1;
+                                reg_write=1;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr=0;
+                            end
+                    4'h7:begin //XOR_I
+                                a_addr=0;
+                                b_addr=operation[7:4];
+                                c_addr=operation[7:4];
+                                immediate_val=operation[3:0];                    
+                                alu_control=3'b011;
+                                addr=0;
+                                JCTL=0;
+                                im_sel=1;
+                                reg_write=1;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr=0;
+                            end
+                    4'h8:begin //SR_I
+                                a_addr=0;
+                                b_addr=operation[7:4];
+                                c_addr=operation[7:4];
+                                immediate_val=operation[3:0];                    
+                                alu_control=3'b100;
+                                addr=0;
+                                JCTL=0;
+                                im_sel=1;
+                                reg_write=1;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr=0;
+                            end
+                    4'h9:begin //SL_I
+                                a_addr=0;
+                                b_addr=operation[7:4];
+                                c_addr=operation[7:4];
+                                immediate_val=operation[3:0];                    
+                                alu_control=3'b010;
+                                addr=0;
+                                JCTL=0;
+                                im_sel=1;
+                                reg_write=1;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr=0;
+                            end
+                    default: begin //improper command
+                                a_addr=0;
+                                b_addr=0;
+                                c_addr=0;
+                                immediate_val=0;
+                                alu_control=3'b111;
+                                addr = 0;
+                                JCTL=0;
+                                im_sel=0;
+                                reg_write=0;
+                                data_read=0;
+                                data_write=0;
+                                reg_addr = 0;
+                            end
+                    endcase
+                 end                                                 
+        default: begin   //noop, no idea how you got here but juuuuuust in case
+                    a_addr=0;
+                    b_addr=0;
+                    c_addr=0;
+                    immediate_val=0;
+                    alu_control=3'b111;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=0;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr = 0;
                 end 
        endcase
    end              
