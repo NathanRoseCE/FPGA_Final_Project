@@ -415,7 +415,7 @@ module control_logic(
                             end
                     endcase
                  end                                                 
-        default: begin   //noop, no idea how you got here but juuuuuust in case
+        default: begin   //noop, no idea how you would get here but juuuuuust in case
                     a_addr=0;
                     b_addr=0;
                     c_addr=0;

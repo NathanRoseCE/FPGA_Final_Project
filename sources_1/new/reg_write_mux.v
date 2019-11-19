@@ -22,9 +22,9 @@
 
 module reg_write_mux(
         input data_read,
-        input alu_result,
-        input data_result,
-        output reg w_data_to_reg
+        input [15:0] alu_result,
+        input [15:0] data_result,
+        output reg [15:0] w_data_to_reg
     );
     
     always@* begin

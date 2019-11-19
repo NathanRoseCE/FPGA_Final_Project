@@ -32,9 +32,12 @@ module Instruction_memory(
     wire [7:0] o_data;
     wire o_wr;
     rxuartlite uart (.i_clk(CLK),.i_uart_rx(UART_TXD_IN),.o_wr(o_wr), .o_data(o_data));
+    
+    always @* begin
+        instruction = instruction_array[program_counter];
+    end
 always @(posedge CLK)
     begin
-       instruction<=instruction_array[program_counter];
        if (o_wr==1 &&load_done==0)
         begin
             
