@@ -63,7 +63,7 @@ out_mux omux (.port_sel(instruction[7:4]),.out_write_en(out_write_en),.data_out(
 input_mux inmux(.port_sel(instruction[7:4]),.SW(SW),.Buttons(BTNS),.in_mux_en(in_mux_en),
                .alu_result(result),.data_to_registers(write_data),.counter(counter));                             
 
-jump_control pccntr (.PCLK(PCLK),.jump_address(instruction[4:0]),.jump_en(jump_en),
+PC_control pccntr (.PCLK(PCLK),.jump_address(instruction[4:0]),.jump_en(jump_en),
                      .load_done(load_done),.program_counter(program_counter));
 
 

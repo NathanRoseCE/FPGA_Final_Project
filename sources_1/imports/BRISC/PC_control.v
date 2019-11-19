@@ -20,26 +20,18 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module jump_control(
-        input [1:0] alu_flags, j_ctl,
-        output reg j_en
+module PC_control(
+    input CLK,
+    input [4:0] jump_address,
+    input jump_en,
+    input load_done,
+    output reg [4:0] program_counter=0
     );
     
-    always @* begin
-        case(j_ctl)
-        0: begin
-            j_en = 0;
-            end
-        1: begin
-            j_en = alu_flags[0]; //j_en = zero flag
-            end
-        2: begin
-            j_en = alu_flags[1]; //j_en = negative flag
-            end
-        3: begin
-            j_en = 1;
-            end
-        endcase
-    end
-    
+    always @(posedge CLK)
+    if (load_done==1 && program_counter!=31)
+        if (jump_en==1)
+            program_counter<=jump_address;
+        else    
+            program_counter<=program_counter+1; 
 endmodule
