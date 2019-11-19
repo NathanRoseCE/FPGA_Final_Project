@@ -23,13 +23,13 @@
 module immediate_mux(
     input im_sel,
     input [15:0] reg_data,
-    input [7:0] immediate,
+    input [15:0] immediate,
     output reg [15:0] data_to_alu
     );
     always @*
         begin
             if (im_sel==1)
-                data_to_alu={reg_data[15:8],immediate};
+                data_to_alu=immediate;
            else
                 data_to_alu=reg_data;
         end          

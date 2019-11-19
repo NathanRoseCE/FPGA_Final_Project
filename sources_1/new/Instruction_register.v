@@ -34,9 +34,7 @@ module Instruction_register(
         output reg [7:0] addr,
         output reg [2:0] alu_control,
         output reg [1:0] JCTL,
-        output reg im_sel, reg_write, data_read, data_write, reg_addr 
-        
-        
+        output reg im_sel, reg_write, data_read, data_write, reg_addr
     );
     //I was told to do it at the folling edge so here it is
     assign CLK_INV = ~CLK;
