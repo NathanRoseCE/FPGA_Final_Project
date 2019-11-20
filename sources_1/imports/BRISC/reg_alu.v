@@ -25,10 +25,11 @@ module processor(
     input [15:0] SW,
     input UART_TXD_IN,
     input [4:0] BTNS,
-    output reg LED16_B,
-    output reg [15:0] LED=0,
+    output LED16_B,
+    output [15:0] LED,
     output [7:0] CA,AN
     );
+    assign LED16_B = load_done;
     
     //Instruction Fetch/Decode variables
     wire[15:0] operation;
@@ -166,7 +167,7 @@ module processor(
         .data_write_in(data_write_E),
         .reg_addr_in(reg_addr_E),
         
-       .data_val(data_result_W), .result(alu_result_W),
+       .result(alu_result_W),
        .c_addr(c_addr_W), 
        .addr(addr_W),
        .reg_write(reg_write_W), .data_read(data_read_W),

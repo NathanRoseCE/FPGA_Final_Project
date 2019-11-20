@@ -22,10 +22,8 @@
 
 module adjustable_clock(
         input CLK,
-        input load_done,
         input [15:0] SW,
         
-        output reg LED16_B,
         output reg SCLK
     );
     
@@ -33,7 +31,6 @@ module adjustable_clock(
     reg [31:0] count=0; 
     reg [15:0] counter=0;
     always @(posedge CLK) begin
-        LED16_B<=load_done;
         counter<=counter+1;
         if (count<(50000000>>SW[14:12]))
             count<=count+SW[15];

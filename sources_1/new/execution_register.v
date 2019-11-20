@@ -23,12 +23,12 @@
 module execution_register(
         input CLK,
         
-        input [15:0] data_val_in, result_in,
+        input [15:0] result_in,
         input [7:0] addr_in,
         input [3:0] c_addr_in, 
         input reg_write_in, data_read_in, data_write_in, reg_addr_in,
         
-        output reg [15:0] data_val, result,
+        output reg [15:0] result,
         output reg [7:0] addr,
         output reg [3:0] c_addr, 
         output reg reg_write, data_read, data_write, reg_addr
@@ -36,7 +36,6 @@ module execution_register(
     assign CLK_INV = ~CLK;
     
     always@(posedge CLK_INV) begin
-        data_val = data_val_in;
         result = result_in;
         addr = addr_in;
         c_addr = c_addr_in;

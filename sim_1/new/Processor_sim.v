@@ -65,7 +65,7 @@ module Processor_sim(
     .program_counter(PC),
     .load_done(load_done),
     .instruction(operation),
-    .debug(1)
+    .debug(0)
     );
     
     PC_control pc_ctl(
@@ -172,7 +172,7 @@ module Processor_sim(
         .data_write_in(data_write_E),
         .reg_addr_in(reg_addr_E),
         
-       .data_val(data_result_W), .result(alu_result_W),
+       .result(alu_result_W),
        .c_addr(c_addr_W), 
        .addr(addr_W),
        .reg_write(reg_write_W), .data_read(data_read_W),
@@ -208,7 +208,7 @@ module Processor_sim(
         .alu_result(alu_result_W),
         .data_result(data_result_W),
         .w_data_to_reg(c_val_W)
-    );  
+    );    
     
     
     /***************************END SOURCE*************************/
