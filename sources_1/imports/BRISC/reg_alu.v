@@ -46,7 +46,7 @@ module processor(
     //exec -> Instruction Fetch/Decode variables
     wire[4:0] jump_address_E;
     wire jump_en_E;
-    AND jump_en_and(jump_en, CLK, jump_en_E);
+    AND jump_en_and(.out(jump_en), .a(CLK), .b(jump_en_E));
     //Instruction Fetch/Decode modules
     Instruction_memory(
     .CLK(CLK), //CLK for UART Reciever not rest of module
@@ -108,7 +108,7 @@ module processor(
     wire[3:0] c_addr_W;
     wire [15:0] c_val_W;
     wire write_en_W;
-    AND write_en_and(write_en, write_en_W, CLK);
+    AND write_en_and(.out(write_en), .a(write_en_W), .b(CLK));
     
     //data modules
     registers(
@@ -216,27 +216,5 @@ module processor(
         .alu_result(alu_result_W),
         .data_result(data_result_W),
         .w_data_to_reg(c_val_W)
-    );
-    
-    
-
-wire load_done;
-reg SCLK=1,PCLK=1;
-reg [31:0] count=0; 
-reg [15:0] counter=0;
-always @(posedge CLK)
-    begin
-        LED16_B<=load_done;
-        counter<=counter+1;
-        LED[15]<=SCLK;
-        LED[14]<=PCLK;
-        if (count<(50000000>>SW[14:12]))
-            count<=count+SW[15];
-        else
-            begin
-                SCLK<=!SCLK;
-                count<=0;
-            end                              
-    end 
-                   
+    );           
 endmodule

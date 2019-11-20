@@ -24,15 +24,15 @@ module registers(
     input [3:0] rega_addr,regb_addr,write_addr,
     input [15:0] write_data,
     input write_enable,
-    output reg [15:0] rega_data=0,regb_data=0
+    output reg [15:0] rega_data,regb_data
     );
     reg [15:0] reg_array [15:0];
-//    reg [4:0] i;
-// initial
-//    begin
-//        for (i=0;i<16;i=i+1)
-//            reg_array[i]=i;
-//    end        
+    reg [4:0] i;
+ initial
+    begin
+        for (i=0;i<16;i=i+1)
+            reg_array[i]=0;
+    end        
         
  
  

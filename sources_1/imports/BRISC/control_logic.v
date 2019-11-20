@@ -81,7 +81,7 @@ module control_logic(
                     alu_control=3'b000;
                     addr=0;
                     JCTL=0;
-                    im_sel=0;
+                    im_sel=1;
                     reg_write=1;
                     data_read=1;
                     data_write=0;

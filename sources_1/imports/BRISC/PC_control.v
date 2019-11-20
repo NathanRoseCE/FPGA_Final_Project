@@ -27,11 +27,25 @@ module PC_control(
     input load_done,
     output reg [4:0] program_counter=0
     );
-    
-    always @(posedge CLK)
-    if (load_done==1 && program_counter!=31)
-        if (jump_en==1)
-            program_counter<=jump_address;
-        else    
-            program_counter<=program_counter+1; 
+    reg jumped;
+    reg jump_ack;
+    reg [4:0] nextAddr = 0;
+    always@* begin
+        if(jump_ack == 1) begin
+            jumped <= 0;
+        end
+        if (jump_en==1) begin
+            nextAddr<=jump_address;
+            jumped <= 1;
+        end
+    end
+    always @(posedge ~CLK)
+    if (load_done==1 && program_counter!=31 && jumped == 0) begin
+        program_counter<=program_counter+1; 
+        jump_ack <= 0;
+    end 
+    else begin
+        program_counter <= nextAddr;
+        jump_ack <= 1;
+    end
 endmodule

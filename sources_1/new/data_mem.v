@@ -21,14 +21,19 @@ module data_mem (
     );
     
     reg [7:0] memory[255:0];
-    
-    
+    reg[7:0] i;
+    initial begin 
+        for(i = 0; i < 255; i=i+1) begin
+            memory[i] = 0;
+        end
+    end
     //output stuff
     ssegx8 sevenSegment(
         .CLK(CLK),
         .VALUE({memory[40], memory[41], memory[42], memory[43]}),
         .SSEG_CA(CA),
-        .SSEG_AN(AN)
+        .SSEG_AN(AN),
+        .debug(debug_mode)
     );
     assign LED = {memory[8'h44], memory[8'h45]};
     
@@ -36,7 +41,7 @@ module data_mem (
         //input stuff
         memory[8'h4E] <= SW[15:8];
         memory[8'h4F] <= SW[7:0];
-        memory[8'h50] <= BTNS;
+        memory[8'h51] <= BTNS;//just act like its 50
         
         if(read_en) begin
             output_data[15:8] <= memory[address];
