@@ -130,8 +130,8 @@ module control_logic(
                     reg_addr=0;
                 end     
         4'h6:begin  //SUB  
-                    a_addr=operation[7:4];
-                    b_addr=operation[3:0];
+                    a_addr=operation[3:0];
+                    b_addr=operation[7:4];
                     c_addr=operation[11:8];
                     immediate_val=0;                    
                     alu_control=3'b001;
@@ -200,8 +200,8 @@ module control_logic(
                     reg_addr=0;
                 end                                                                         
        4'hB:begin  //SR
-                    a_addr=operation[7:4];
-                    b_addr=operation[3:0];
+                    a_addr=operation[3:0];
+                    b_addr=operation[7:4];
                     c_addr=operation[11:8];
                     immediate_val=0;                    
                     alu_control=3'b100;
@@ -214,8 +214,8 @@ module control_logic(
                     reg_addr=0;
                 end      
        4'hC:begin  //SL
-                    a_addr=operation[7:4];
-                    b_addr=operation[3:0];
+                    a_addr=operation[3:0];
+                    b_addr=operation[7:4];
                     c_addr=operation[11:8];
                     immediate_val=0;                    
                     alu_control=3'b010;

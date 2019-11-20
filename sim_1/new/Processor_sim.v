@@ -64,7 +64,8 @@ module Processor_sim(
     .UART_TXD_IN(UART_TXD_IN),
     .program_counter(PC),
     .load_done(load_done),
-    .instruction(operation)
+    .instruction(operation),
+    .debug(1)
     );
     
     PC_control pc_ctl(

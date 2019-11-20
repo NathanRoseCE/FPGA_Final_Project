@@ -21,6 +21,7 @@
 
 module Instruction_memory(
     input CLK,
+    input debug,
     input UART_TXD_IN,
     input [4:0] program_counter,
     output reg load_done=0,
@@ -37,43 +38,48 @@ module Instruction_memory(
     end
     
 initial begin
-    instruction_array[0]  = 16'h1050;
-    instruction_array[1]  = 16'h114E;
-    instruction_array[2]  = 16'h0000;
-    instruction_array[3]  = 16'hF804;
-    instruction_array[4]  = 16'h0000;
-    instruction_array[5]  = 16'h0000;
-    instruction_array[6]  = 16'hF501;
-    instruction_array[7]  = 16'h0000;
-    instruction_array[8]  = 16'h0000;
-    instruction_array[9]  = 16'hD000;
-    instruction_array[10] = 16'h0000;
-    instruction_array[11] = 16'h3144;
-    instruction_array[12] = 16'hF000;
-    instruction_array[13] = 16'h0000;
-    instruction_array[14] = 16'h0000;
-    instruction_array[15] = 16'h0000;
-    instruction_array[16] = 16'h0000;
-    instruction_array[17] = 16'h0000;
-    instruction_array[18] = 16'h0000;
-    instruction_array[19] = 16'h0000;
-    instruction_array[20] = 16'h0000;
-    instruction_array[21] = 16'h0000;
-    instruction_array[22] = 16'h0000;
-    instruction_array[23] = 16'h0000;
-    instruction_array[24] = 16'h0000;
-    instruction_array[24] = 16'h0000;
-    instruction_array[25] = 16'h0000;
-    instruction_array[26] = 16'h0000;
-    instruction_array[27] = 16'h0000;
-    instruction_array[28] = 16'h0000;
-    instruction_array[29] = 16'h0000;
-    instruction_array[30] = 16'h0000;
-    instruction_array[31] = 16'h0000;
-    load_done = 1;
+    if(debug == 1) begin
+        instruction_array[0]  = 16'h4008;
+        instruction_array[1]  = 16'h4102;
+        instruction_array[2]  = 16'h0000;
+        instruction_array[3]  = 16'h0000;
+        instruction_array[4]  = 16'h5201;
+        instruction_array[5]  = 16'h6301;
+        instruction_array[6]  = 16'h8401;
+        instruction_array[7]  = 16'h3244;
+        instruction_array[8]  = 16'hC201;
+        instruction_array[9]  = 16'h3344;
+        instruction_array[10] = 16'hF912;
+        instruction_array[11] = 16'h3444;
+        instruction_array[12] = 16'hF802;
+        instruction_array[13] = 16'h3244;
+        instruction_array[14] = 16'h3144;
+        instruction_array[15] = 16'h3044;
+        instruction_array[16] = 16'h0000;
+        instruction_array[17] = 16'h0000;
+        instruction_array[18] = 16'h0000;
+        instruction_array[19] = 16'h0000;
+        instruction_array[20] = 16'h0000;
+        instruction_array[21] = 16'h0000;
+        instruction_array[22] = 16'h0000;
+        instruction_array[23] = 16'h0000;
+        instruction_array[24] = 16'h0000;
+        instruction_array[24] = 16'h0000;
+        instruction_array[25] = 16'h0000;
+        instruction_array[26] = 16'h0000;
+        instruction_array[27] = 16'h0000;
+        instruction_array[28] = 16'h0000;
+        instruction_array[29] = 16'h0000;
+        instruction_array[30] = 16'h0000;
+        instruction_array[31] = 16'h0000;
+        load_done = 1;
+    end
+    else begin
+        load_done = 0;
+    end
 end
 always @(posedge CLK)
-    begin/*
+    begin
        if (o_wr==1 &&load_done==0)
         begin
             
@@ -92,7 +98,7 @@ always @(posedge CLK)
                     end
                end    
             endcase  
-        end*/
+        end
     end    
     
 endmodule
