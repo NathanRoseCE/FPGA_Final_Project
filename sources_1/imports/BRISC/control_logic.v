@@ -115,7 +115,21 @@ module control_logic(
                     data_write=0;
                     reg_addr = 0;
                   end     
-        4'h5:begin  //ADD  
+        4'h5:begin  //MV
+                    a_addr=operation[7:4];
+                    b_addr=0;
+                    c_addr=operation[11:8];
+                    immediate_val=0;
+                    alu_control=3'b111;
+                    addr = 0;
+                    JCTL=0;
+                    im_sel=0;
+                    reg_write=0;
+                    data_read=0;
+                    data_write=0;
+                    reg_addr = 0;
+                end 
+        4'h6:begin  //ADD  
                     a_addr=operation[7:4];
                     b_addr=operation[3:0];
                     c_addr=operation[11:8];
@@ -129,7 +143,7 @@ module control_logic(
                     data_write=0;
                     reg_addr=0;
                 end     
-        4'h6:begin  //SUB  
+        4'h7:begin  //SUB  
                     a_addr=operation[3:0];
                     b_addr=operation[7:4];
                     c_addr=operation[11:8];
@@ -143,7 +157,7 @@ module control_logic(
                     data_write=0;
                     reg_addr=0;
                  end    
-        4'h7:begin  //AND  
+        4'h8:begin  //AND  
                     a_addr=operation[7:4];
                     b_addr=operation[3:0];
                     c_addr=operation[11:8];
@@ -157,7 +171,7 @@ module control_logic(
                     data_write=0;
                     reg_addr=0;
                  end   
-        4'h8:begin  //OR
+        4'h9:begin  //OR
                     a_addr=operation[7:4];
                     b_addr=operation[3:0];
                     c_addr=operation[11:8];
@@ -170,21 +184,7 @@ module control_logic(
                     data_read=0;
                     data_write=0;
                     reg_addr=0;
-                 end    
-        4'h9:begin  //noop for now
-                    a_addr=0;
-                    b_addr=0;
-                    c_addr=0;
-                    immediate_val=0;
-                    alu_control=3'b111;
-                    addr = 0;
-                    JCTL=0;
-                    im_sel=0;
-                    reg_write=0;
-                    data_read=0;
-                    data_write=0;
-                    reg_addr = 0;
-                end                   
+                 end       
         4'hA:begin  //XOR 
                     a_addr=operation[7:4];
                     b_addr=operation[3:0];

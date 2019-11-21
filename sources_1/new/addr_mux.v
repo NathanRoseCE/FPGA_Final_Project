@@ -22,6 +22,8 @@
 
 module addr_mux(
         input reg_addr, 
+        input PUSH, POP,
+        input stack_pointer,
         input [15:0] addr,
         input [15:0] alu_result,
         output reg [15:0] true_addr
@@ -30,6 +32,9 @@ module addr_mux(
     always@* begin
         if(reg_addr == 1) begin
             true_addr = alu_result;
+        end
+        else if( (PUSH == 1) || (POP == 1) ) begin
+            true_addr = stack_pointer;
         end
         else begin
             true_addr = addr;
