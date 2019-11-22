@@ -30,7 +30,7 @@ module data_mem (
     //output stuff
     ssegx8 sevenSegment(
         .CLK(CLK),
-        .VALUE({memory[40], memory[41], memory[42], memory[43]}),
+        .VALUE({memory[8'h40], memory[8'h41], memory[8'h42], memory[8'h43]}),
         .SSEG_CA(CA),
         .SSEG_AN(AN),
         .debug(debug_mode)

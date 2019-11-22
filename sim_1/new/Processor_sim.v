@@ -65,7 +65,7 @@ module Processor_sim(
     .program_counter(PC),
     .load_done(load_done),
     .instruction(operation),
-    .debug(0)
+    .debug(1)
     );
     
     PC_control pc_ctl(
