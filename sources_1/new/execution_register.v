@@ -27,11 +27,21 @@ module execution_register(
         input [7:0] addr_in,
         input [3:0] c_addr_in, 
         input reg_write_in, data_read_in, data_write_in, reg_addr_in,
+        input [1:0] stack_ctl_in,
+        input [7:0] stack_pointer_in,
+        input [1:0] j_ctl_in,
+        input [1:0] alu_flags_in,
+        input stack_command_in,
         
         output reg [15:0] result,
         output reg [7:0] addr,
         output reg [3:0] c_addr, 
-        output reg reg_write, data_read, data_write, reg_addr
+        output reg reg_write, data_read, data_write, reg_addr,
+        output reg [1:0] stack_ctl,
+        output reg [7:0] stack_pointer,
+        output reg [1:0] j_ctl,
+        output reg [1:0] alu_flags,
+        output reg stack_command
     );
     assign CLK_INV = ~CLK;
     
@@ -43,6 +53,11 @@ module execution_register(
         data_read = data_read_in;
         data_write = data_write_in;
         reg_addr = reg_addr_in;
+        stack_pointer = stack_pointer_in;
+        stack_ctl = stack_ctl_in;
+        j_ctl = j_ctl_in;
+        alu_flags = alu_flags_in;
+        stack_command = stack_command_in;
     end
     
 endmodule

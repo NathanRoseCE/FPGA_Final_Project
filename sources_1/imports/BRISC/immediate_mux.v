@@ -21,16 +21,22 @@
 
 
 module immediate_mux(
-    input im_sel,
+    input [1:0] imm_ctl,
     input [15:0] reg_data,
     input [7:0] immediate,
+    input [7:0] PC,
     output reg [15:0] data_to_alu
     );
     always @*
         begin
-            if (im_sel==1)
+           if (imm_ctl==1) begin
                 data_to_alu={8'h00, immediate};
-           else
+           end
+           else if(imm_ctl == 2) begin
+                data_to_alu={8'h00, PC};
+           end  
+           else begin
                 data_to_alu=reg_data;
+           end
         end          
 endmodule

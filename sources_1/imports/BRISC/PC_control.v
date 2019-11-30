@@ -22,10 +22,10 @@
 
 module PC_control(
     input CLK,
-    input [4:0] jump_address,
+    input [7:0] jump_address,
     input jump_en,
     input load_done,
-    output reg [4:0] program_counter=0
+    output reg [7:0] program_counter=0
     );
     reg jumped;
     reg jump_ack;

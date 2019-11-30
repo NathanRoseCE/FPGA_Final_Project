@@ -23,7 +23,7 @@ module Instruction_memory(
     input CLK,
     input debug,
     input UART_TXD_IN,
-    input [4:0] program_counter,
+    input [7:0] program_counter,
     output reg load_done=0,
     output reg [15:0] instruction
     );
@@ -39,18 +39,18 @@ module Instruction_memory(
     
 initial begin
     if(debug == 1) begin
-        instruction_array[0]  = 16'h104E;
-        instruction_array[1]  = 16'h0000;
+        instruction_array[0]  = 16'h40AA;
+        instruction_array[1]  = 16'h4122;
         instruction_array[2]  = 16'h0000;
-        instruction_array[3]  = 16'h3044;
-        instruction_array[4]  = 16'h0000;
-        instruction_array[5]  = 16'h0000;
-        instruction_array[6]  = 16'hF000;
-        instruction_array[7]  = 16'h0000;
-        instruction_array[8]  = 16'h0000;
+        instruction_array[3]  = 16'hF100;
+        instruction_array[4]  = 16'hF110;
+        instruction_array[5]  = 16'h4007;
+        instruction_array[6]  = 16'h0000;
+        instruction_array[7]  = 16'hF210;
+        instruction_array[8]  = 16'hF200;
         instruction_array[9]  = 16'h0000;
         instruction_array[10] = 16'h0000;
-        instruction_array[11] = 16'h0000;
+        instruction_array[11] = 16'h3044;
         instruction_array[12] = 16'h0000;
         instruction_array[13] = 16'h0000;
         instruction_array[14] = 16'h0000;
