@@ -21,14 +21,14 @@
 
 
 module jump_address_mux(
-        input address_ctl,
+        input [1:0] stack_ctl,
         input [7:0] address_in,
         input [7:0] data_mem_val,
         output reg [7:0] address
     );
     
     always@* begin
-        if(address_ctl == 0)  begin
+        if(stack_ctl != 3)  begin
             address = address_in;
         end
         else begin

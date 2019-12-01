@@ -25,6 +25,7 @@ module execution_register(
         
         input [15:0] result_in,
         input [7:0] addr_in,
+        input [7:0] j_addr_in,
         input [3:0] c_addr_in, 
         input reg_write_in, data_read_in, data_write_in, reg_addr_in,
         input [1:0] stack_ctl_in,
@@ -35,6 +36,7 @@ module execution_register(
         
         output reg [15:0] result,
         output reg [7:0] addr,
+        output reg [7:0] j_addr,
         output reg [3:0] c_addr, 
         output reg reg_write, data_read, data_write, reg_addr,
         output reg [1:0] stack_ctl,
@@ -58,6 +60,7 @@ module execution_register(
         j_ctl = j_ctl_in;
         alu_flags = alu_flags_in;
         stack_command = stack_command_in;
+        j_addr = j_addr_in;
     end
     
 endmodule

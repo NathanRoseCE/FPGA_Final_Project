@@ -40,17 +40,17 @@ module Instruction_memory(
 initial begin
     if(debug == 1) begin
         instruction_array[0]  = 16'h40AA;
-        instruction_array[1]  = 16'h4122;
+        instruction_array[1]  = 16'h4107;
         instruction_array[2]  = 16'h0000;
-        instruction_array[3]  = 16'hF100;
-        instruction_array[4]  = 16'hF110;
-        instruction_array[5]  = 16'h4007;
-        instruction_array[6]  = 16'h0000;
-        instruction_array[7]  = 16'hF210;
-        instruction_array[8]  = 16'hF200;
+        instruction_array[3]  = 16'hF30A;
+        instruction_array[4]  = 16'h0000;
+        instruction_array[5]  = 16'h0000;
+        instruction_array[6]  = 16'h3044;
+        instruction_array[7]  = 16'hF01F;
+        instruction_array[8]  = 16'h0000;
         instruction_array[9]  = 16'h0000;
-        instruction_array[10] = 16'h0000;
-        instruction_array[11] = 16'h3044;
+        instruction_array[10] = 16'h40BB;
+        instruction_array[11] = 16'hF400;
         instruction_array[12] = 16'h0000;
         instruction_array[13] = 16'h0000;
         instruction_array[14] = 16'h0000;

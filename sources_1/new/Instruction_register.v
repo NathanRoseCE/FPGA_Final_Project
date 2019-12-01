@@ -25,6 +25,7 @@ module Instruction_register(
         input [3:0] a_addr_in, b_addr_in, c_addr_in,//c = a + b
         input [7:0] immediate_val_in,
         input [7:0] addr_in,
+        input [7:0] j_addr_in,
         input [7:0] PC_in,
         input [2:0] alu_control_in,
         input [1:0] JCTL_in, im_ctl_in,
@@ -35,6 +36,7 @@ module Instruction_register(
         output reg [3:0] a_addr, b_addr, c_addr,//c = a + b
         output reg [7:0] immediate_val,
         output reg [7:0] addr,
+        output reg [7:0] j_addr,
         output reg [7:0] PC,
         output reg [2:0] alu_control,
         output reg [1:0] JCTL, im_ctl,
@@ -51,6 +53,7 @@ module Instruction_register(
         c_addr = c_addr_in;
         immediate_val = immediate_val_in;
         addr = addr_in;
+        j_addr = j_addr_in;
         alu_control = alu_control_in;
         JCTL = JCTL_in;
         im_ctl = im_ctl_in;

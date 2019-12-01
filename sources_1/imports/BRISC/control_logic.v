@@ -38,6 +38,7 @@ module control_logic(
     output reg [3:0] a_addr, b_addr, c_addr,//c = a + b
     output reg [7:0] immediate_val,
     output reg [7:0] addr,
+    output reg [7:0] j_addr,
     output reg [2:0] alu_control,
     output reg [1:0] JCTL, im_ctl,
     output reg reg_write, data_read, data_write, reg_addr,
@@ -54,6 +55,7 @@ module control_logic(
                     immediate_val=0;
                     alu_control=3'b111;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=0;
@@ -70,6 +72,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b111;
                     addr = operation[7:0];
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -86,6 +89,7 @@ module control_logic(
                     immediate_val=operation[3:0];                    
                     alu_control=3'b000;
                     addr=0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=1;
                     reg_write=1;
@@ -102,6 +106,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b111;
                     addr = operation[7:0];
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=0;
@@ -118,6 +123,7 @@ module control_logic(
                     immediate_val=operation[7:0];                    
                     alu_control=3'b111;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=1;
                     reg_write=1;
@@ -134,6 +140,7 @@ module control_logic(
                     immediate_val=0;
                     alu_control=3'b111;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=0;
@@ -150,6 +157,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b000;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -166,6 +174,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b001;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -182,6 +191,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b101;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -198,6 +208,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b110;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -214,6 +225,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b011;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -230,6 +242,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b100;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -246,6 +259,7 @@ module control_logic(
                     immediate_val=0;                    
                     alu_control=3'b010;
                     addr = 0;
+                    j_addr = 0;
                     JCTL=0;
                     im_ctl=0;
                     reg_write=1;
@@ -261,7 +275,8 @@ module control_logic(
                     c_addr=0;
                     immediate_val=0;
                     alu_control=3'b111;
-                    addr = operation[7:0];
+                    addr = 0;
+                    j_addr = operation[7:0];
                     JCTL=1;
                     im_ctl=0;
                     reg_write=0;
@@ -277,7 +292,8 @@ module control_logic(
                     c_addr=0;
                     immediate_val=0;
                     alu_control=3'b111;
-                    addr = operation[7:0];
+                    addr = 0;
+                    j_addr = operation[7:0];
                     JCTL=2;
                     im_ctl=0;
                     reg_write=0;
@@ -295,7 +311,8 @@ module control_logic(
                                 c_addr=0;
                                 immediate_val=0;
                                 alu_control=3'b111;
-                                addr = operation[7:0];
+                                addr = 0;
+                                j_addr = operation[7:0];
                                 JCTL=3;
                                 im_ctl=0;
                                 reg_write=0;
@@ -312,6 +329,7 @@ module control_logic(
                                 immediate_val=0;
                                 alu_control=3'b111;
                                 addr = 0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=0;
                                 reg_write=0;
@@ -328,6 +346,7 @@ module control_logic(
                                 immediate_val=0;
                                 alu_control=3'b111;
                                 addr = 0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=0;
                                 reg_write=1;
@@ -344,7 +363,8 @@ module control_logic(
                                 immediate_val=0;
                                 alu_control=3'b111;
                                 addr = 0;
-                                JCTL=0;
+                                j_addr = operation[7:0];
+                                JCTL=3;
                                 im_ctl=2;
                                 reg_write=0;
                                 data_read=0;
@@ -360,7 +380,8 @@ module control_logic(
                                 immediate_val=0;
                                 alu_control=3'b111;
                                 addr = 0;
-                                JCTL=0;
+                                j_addr = 0;
+                                JCTL=3;
                                 im_ctl=0;
                                 reg_write=0;
                                 data_read=0;
@@ -376,6 +397,7 @@ module control_logic(
                                 immediate_val=operation[3:0];                    
                                 alu_control=3'b000;
                                 addr=0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=1;
                                 reg_write=1;
@@ -392,6 +414,7 @@ module control_logic(
                                 immediate_val=operation[3:0];                    
                                 alu_control=3'b001;
                                 addr=0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=1;
                                 reg_write=1;
@@ -408,6 +431,7 @@ module control_logic(
                                 immediate_val=operation[3:0];                    
                                 alu_control=3'b101;
                                 addr=0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=1;
                                 reg_write=1;
@@ -424,6 +448,7 @@ module control_logic(
                                 immediate_val=operation[3:0];                    
                                 alu_control=3'b110;
                                 addr=0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=1;
                                 reg_write=1;
@@ -440,6 +465,7 @@ module control_logic(
                                 immediate_val=operation[3:0];                    
                                 alu_control=3'b011;
                                 addr=0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=1;
                                 reg_write=1;
@@ -456,6 +482,7 @@ module control_logic(
                                 immediate_val=operation[3:0];                    
                                 alu_control=3'b100;
                                 addr=0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=1;
                                 reg_write=1;
@@ -472,6 +499,7 @@ module control_logic(
                                 immediate_val=operation[3:0];                    
                                 alu_control=3'b010;
                                 addr=0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=1;
                                 reg_write=1;
@@ -488,6 +516,7 @@ module control_logic(
                                 immediate_val=0;
                                 alu_control=3'b111;
                                 addr = 0;
+                                j_addr = 0;
                                 JCTL=0;
                                 im_ctl=0;
                                 reg_write=0;
