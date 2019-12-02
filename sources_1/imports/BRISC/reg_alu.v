@@ -36,6 +36,7 @@ module processor(
     wire[3:0] a_addr_I, b_addr_I, c_addr_I;
     wire[7:0] immediate_val_I;
     wire[7:0] addr_I;
+    wire[7:0] j_addr_I;
     wire[2:0] alu_ctl_I;
     wire[1:0] JCTL_I;
     wire[1:0] im_ctl_I;
@@ -77,6 +78,7 @@ module processor(
     .a_addr(a_addr_I), .b_addr(b_addr_I), .c_addr(c_addr_I),
     .immediate_val(immediate_val_I),
     .addr(addr_I),
+    .j_addr(j_addr_I),
     .alu_control(alu_ctl_I),
     .JCTL(JCTL_I),
     .im_ctl(im_ctl_I), .reg_write(reg_write_I), .data_read(data_read_I), 
@@ -97,12 +99,14 @@ module processor(
     wire stack_command_E;
     wire [7:0] stack_pointer_E, PC_E;
     wire [7:0] addr_E;
+    wire [7:0] j_addr_E;
     //Instruction / Execute register
     Instruction_register I_reg(
         .CLK(CLK),
         .a_addr_in(a_addr_I), .b_addr_in(b_addr_I), .c_addr_in(c_addr_I),//c = a + b
         .immediate_val_in(immediate_val_I),
         .addr_in(addr_I),
+        .j_addr_in(j_addr_I),
         .PC_in(PC_I),
         .alu_control_in(alu_ctl_I),
         .JCTL_in(JCTL_I),
@@ -113,6 +117,7 @@ module processor(
         .a_addr(a_addr_E), .b_addr(b_addr_E), .c_addr(c_addr_E),//c = a + b
         .immediate_val(immediate_val_E),
         .addr(addr_E),
+        .j_addr(j_addr_E),
         .alu_control(alu_ctl_E),
         .JCTL(JCTL_E),
         .im_ctl(im_ctl_E), .reg_write(reg_write_E), .data_read(data_read_E), 
@@ -172,6 +177,7 @@ module processor(
     wire [7:0] stack_pointer_W;
     wire [1:0] alu_flags_W, JCTL_W;
     wire[7:0] addr_W;
+    wire[7:0] j_addr_W;
     wire stack_command_W;
     
     execution_register ex_reg(
@@ -179,6 +185,7 @@ module processor(
         .result_in(alu_result_E),
         .c_addr_in(c_addr_E), 
         .addr_in(addr_E),
+        .j_addr_in(j_addr_E),
         .reg_write_in(reg_write_E), .data_read_in(data_read_E),
         .data_write_in(data_write_E),
         .reg_addr_in(reg_addr_E),
@@ -191,6 +198,7 @@ module processor(
        .result(alu_result_W),
        .c_addr(c_addr_W), 
        .addr(addr_W),
+       .j_addr(j_addr_W),
        .reg_write(reg_write_W), .data_read(data_read_W),
        .data_write(data_write_W),
        .reg_addr(reg_addr_W),
@@ -233,7 +241,6 @@ module processor(
         .debug_mode(0)
     );
     
-    
     reg_write_mux reg_write_multi(
         .data_read(data_read),
         .alu_result(alu_result_W),
@@ -245,8 +252,8 @@ module processor(
         .j_en(jump_en_W)
     );
     jump_address_mux j_addres_mux(
-        .address_ctl(stack_ctl_W[1]),
-        .address_in(addr_W),
+        .stack_ctl(stack_ctl_W),
+        .address_in(j_addr_W),
         .data_mem_val(data_result_W),
         .address(address_W)
     );
