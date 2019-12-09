@@ -31,7 +31,8 @@ module top_processor(
     );
     wire SLCK;
     processor(
-    .CLK(CLK),
+    .CLK(SLCK),
+    .full_clk(CLK),
     .SW(SW),
     .UART_TXD_IN(UART_TXD_IN),
     .BTNS(BTNS),

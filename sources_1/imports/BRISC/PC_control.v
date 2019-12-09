@@ -25,16 +25,17 @@ module PC_control(
     input [7:0] jump_address,
     input jump_en,
     input load_done,
+    input halt,
     output reg [7:0] program_counter=0
     );
-    reg jumped;
+    reg jumped;;
     reg jump_ack;
     reg [4:0] nextAddr = 0;
     initial begin
         jumped = 0;
         jump_ack = 0;
     end
-    always@* begin
+    always@(*) begin
         if(jump_ack == 1) begin
             jumped <= 0;
         end
@@ -44,8 +45,8 @@ module PC_control(
         end
     end
     always @(posedge ~CLK)
-    if (load_done==1 && program_counter!=31) begin
-        if(jumped == 0) begin
+    if ( (load_done==1) && (program_counter!=31) && (halt==0) ) begin
+        if(jumped == 0 ) begin
             program_counter<=program_counter+1; 
             jump_ack <= 0;
         end

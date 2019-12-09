@@ -35,13 +35,12 @@ module registers(
     end        
         
  
- 
+    always@(posedge write_enable) begin
+        reg_array[write_addr] <= write_data;
+    end
     
     always @*  begin
         rega_data<=reg_array[rega_addr];
         regb_data<=reg_array[regb_addr];
-        if (write_enable==1) begin
-            reg_array[write_addr]<=write_data;
-        end
     end
 endmodule

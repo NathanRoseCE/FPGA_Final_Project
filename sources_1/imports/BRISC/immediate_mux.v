@@ -33,7 +33,7 @@ module immediate_mux(
                 data_to_alu={8'h00, immediate};
            end
            else if(imm_ctl == 2) begin
-                data_to_alu={8'h00, PC + 1};//trust me it works
+                data_to_alu={8'h00, PC + 3};//trust me it works
            end  
            else begin
                 data_to_alu=reg_data;

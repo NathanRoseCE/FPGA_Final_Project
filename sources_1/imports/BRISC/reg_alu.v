@@ -22,6 +22,7 @@
 
 module processor(
     input CLK,
+    input full_clk,
     input [15:0] SW,
     input UART_TXD_IN,
     input [4:0] BTNS,
@@ -30,7 +31,7 @@ module processor(
     output [7:0] CA,AN
     );
     
-    //Instruction Fetch/Decode variables
+   //Instruction Fetch/Decode variables
     wire[15:0] operation;
     wire[7:0] PC_I;
     wire[3:0] a_addr_I, b_addr_I, c_addr_I;
@@ -46,6 +47,7 @@ module processor(
     wire reg_addr_I;
     wire [1:0] stack_ctl_I;
     wire stack_command_I;
+    wire halt;
     
     //write -> Instruction Fetch/Decode variables
     wire jump_en_W;
@@ -57,7 +59,7 @@ module processor(
     
     //Instruction Fetch/Decode modules
     Instruction_memory i_mem(
-    .CLK(CLK), //CLK for UART Reciever not rest of module
+    .CLK(full_clk), 
     .UART_TXD_IN(UART_TXD_IN),
     .program_counter(PC_I),
     .load_done(load_done),
@@ -70,7 +72,8 @@ module processor(
     .jump_address(address_W),
     .jump_en(jump_en),
     .load_done(load_done),
-    .program_counter(PC_I)
+    .program_counter(PC_I),
+    .halt(halt)
     );
     
     control_logic ctl_logic(
@@ -83,7 +86,8 @@ module processor(
     .JCTL(JCTL_I),
     .im_ctl(im_ctl_I), .reg_write(reg_write_I), .data_read(data_read_I), 
     .data_write(data_write_I), .reg_addr(reg_addr_I), 
-    .stack_ctl(stack_ctl_I), .stack_command(stack_command_I)
+    .stack_ctl(stack_ctl_I), .stack_command(stack_command_I),
+    .halt(halt)
     );
 
     //execute variables
@@ -224,13 +228,12 @@ module processor(
     OR data_write_or(.out(data_write), .a(data_write_W), .b(stack_write));
     AND data_write_en_and(.out(write_en), .a(data_write), .b(CLK));
     wire data_read;
-    wire read_en;
     OR data_read_or(.out(data_read), .a(data_read_W), .b(stack_ctl_W[0]));
-    AND data_read_en_or(.out(read_en), .a(data_read), .b(CLK));
     data_mem data_memory(
         .CLK(CLK),
+        .full_clk(full_clk),
         .address(true_addr_W),
-        .read_en(read_en),
+        .read_en(data_read),
         .write_en(write_en),
         .input_data(alu_result_W),
         .output_data(data_result_W),
@@ -258,5 +261,8 @@ module processor(
         .address(address_W)
     );
             
-    assign LED16_B = load_done;
+    wire blue;
+    AND bluey(.out(blue), .a(load_done), .b(CLK));
+    assign LED16_B = blue;
+    
 endmodule
