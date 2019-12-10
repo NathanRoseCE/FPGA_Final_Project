@@ -28,8 +28,8 @@ module Instruction_memory(
     output reg [15:0] instruction
     );
     reg state=0;
-    reg [4:0] write_addr=0;
-    reg [15:0] instruction_array [31:0];
+    reg [7:0] write_addr=0;
+    reg [15:0] instruction_array [255:0];
     wire [7:0] o_data;
     wire o_wr;
     rxuartlite uart (.i_clk(CLK),.i_uart_rx(UART_TXD_IN),.o_wr(o_wr), .o_data(o_data));
@@ -90,7 +90,7 @@ always @(posedge CLK)
                 instruction_array[write_addr][7:0]<=o_data;
                 state<=0;     
                 write_addr<=write_addr+1;
-                if (write_addr==31)
+                if (write_addr==255)
                     begin 
                       load_done<=1;  
                     end

@@ -45,7 +45,7 @@ module PC_control(
         end
     end
     always @(posedge ~CLK)
-    if ( (load_done==1) && (program_counter!=31) && (halt==0) ) begin
+    if ( (load_done==1) && (program_counter!=255) && (halt==0) ) begin
         if(jumped == 0 ) begin
             program_counter<=program_counter+1; 
             jump_ack <= 0;
